@@ -1,0 +1,4 @@
+Ce fichier est un placeholder. Merci d’ajouter le fichier Roboto-Regular.ttf ici.
+
+Télécharge-le depuis :
+https://github.com/google/fonts/blob/main/apache/roboto/Roboto-Regular.ttf?raw=true

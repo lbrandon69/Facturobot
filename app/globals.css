@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  background: var(--background);
+  color: var(--foreground);
+  margin: 0;
+  min-height: 100vh;
+  transition: background 0.2s, color 0.2s;
+}
+
+:root {
+  --background: #f6f8fa;
+  --foreground: #222;
+  --primary: #635bff;
+  --secondary: #fafafa;
+  --border: #e5e7eb;
+}
+
+.dark {
+  --background: #18181b;
+  --foreground: #f3f3f3;
+  --primary: #8b5cf6;
+  --secondary: #23232a;
+  --border: #33343a;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+table {
+  background: var(--secondary);
+  color: var(--foreground);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: var(--secondary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
