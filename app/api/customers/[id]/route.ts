@@ -3,7 +3,8 @@ import { prisma } from '@/lib/prisma';
 
 // GET: récupérer un client par ID
 
-export async function GET(req: Request, { params }) {
+export async function GET(req: Request, context) {
+  const { params } = await context;
   try {
     const customer = await prisma.customer.findUnique({ where: { id: params.id } });
     if (!customer) return NextResponse.json({ error: 'Client non trouvé' }, { status: 404 });
@@ -15,7 +16,8 @@ export async function GET(req: Request, { params }) {
 
 // PUT: modifier un client
 
-export async function PUT(req: Request, { params }) {
+export async function PUT(req: Request, context) {
+  const { params } = await context;
   const body = await req.json();
   const { name, email, companyNumber, vatNumber } = body;
   try {
@@ -30,7 +32,8 @@ export async function PUT(req: Request, { params }) {
 }
 
 
-export async function DELETE(req: Request, { params }) {
+export async function DELETE(req: Request, context) {
+  const { params } = await context;
   try {
     await prisma.customer.delete({ where: { id: params.id } });
     return NextResponse.json({ success: true });

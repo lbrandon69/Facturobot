@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import { prisma } from '../../../../../lib/prisma';
 import PDFDocument from 'pdfkit';
 
-export async function GET(req: Request, { params }) {
+export async function GET(req: Request, context) {
+  const { params } = await context;
   const invoice = await prisma.invoice.findUnique({
     where: { id: params.id },
     include: { items: true, customer: true },
