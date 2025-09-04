@@ -4,10 +4,7 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function POST(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function POST(req: Request, { params }) {
   const invoice = await prisma.invoice.findUnique({
     where: { id: params.id },
     include: { customer: true },
