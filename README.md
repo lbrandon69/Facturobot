@@ -1,7 +1,6 @@
 
 # Automatisation de Factures – Plateforme Premium
 
-![screenshot](./public/screenshot-premium.png)
 
 ## 🚀 Présentation
 
@@ -44,8 +43,8 @@ Application Next.js 15/React 19 pour la gestion et l’automatisation de facture
 ## ⚡ Installation & Lancement
 
 ```bash
-git clone <repo>
-cd <repo>
+git clone <https://github.com/lbrandon69/Facturobot.git>
+cd <https://github.com/lbrandon69/Facturobot.git>
 npm install
 npm run dev
 ```
@@ -123,4 +122,4 @@ Pour toute évolution, bug ou suggestion, ouvrir une issue ou contacter le déve
 
 ## 👤 Auteur
 
-Projet réalisé par Lutula.
+Projet réalisé par Lbrandon.
