@@ -9,14 +9,18 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const body = await req.json();
-  const { id, ...productData } = body;
-  const { data, error } = await supabase.from('Product').insert([
-    productData
-  ]).select();
-  if (error) {
-    console.error('Erreur Supabase:', error);
-    return NextResponse.json({ error: error.message, details: error }, { status: 500 });
+  try {
+    const body = await req.json();
+    const { id, ...productData } = body;
+    const { data, error } = await supabase.from('Product').insert([
+      productData
+    ]).select();
+    if (error) {
+      console.error('Erreur Supabase:', error);
+      return NextResponse.json({ error: error.message, details: error }, { status: 500 });
+    }
+    return NextResponse.json(data?.[0] ?? null);
+  } catch (e: any) {
+    return NextResponse.json({ error: 'Erreur serveur', details: e?.message || e }, { status: 500 });
   }
-  return NextResponse.json(data?.[0] ?? null);
 }
