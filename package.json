@@ -7,7 +7,6 @@
   "build": "next build",
   "start": "next start",
   "seed": "tsx scripts/seed.ts"
-  // ...existing code...
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -47,4 +46,3 @@
     "typescript": "^5.0.0"
   }
 }
-  // ...existing code...
