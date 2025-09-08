@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "seed": "tsx scripts/seed.ts",
-    "prisma": "prisma"
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "seed": "tsx scripts/seed.ts"
+  // ...existing code...
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -16,7 +16,7 @@
     "@heroicons/react": "^2.2.0",
     "@mui/icons-material": "^7.3.2",
     "@mui/material": "^7.3.2",
-    "@prisma/client": "^6.15.0",
+    
     "@radix-ui/react-toast": "^1.2.15",
     "@react-pdf/renderer": "^4.3.0",
     "@supabase/supabase-js": "^2.57.2",
@@ -28,7 +28,6 @@
     "next": "^15.5.2",
     "next-themes": "^0.4.6",
     "pdfkit": "^0.17.2",
-    "prisma": "^6.15.0",
     "react": "^19.1.1",
     "react-avatar": "^5.0.4",
     "react-dom": "^19.1.1",
@@ -48,3 +47,4 @@
     "typescript": "^5.0.0"
   }
 }
+  // ...existing code...
