@@ -20,8 +20,6 @@ export async function PUT(req: Request, context) {
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   return NextResponse.json(data?.[0] ?? null);
 }
-import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
 
 export async function DELETE(req: Request, context) {
   const { params } = await context;
