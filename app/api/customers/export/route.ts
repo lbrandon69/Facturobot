@@ -11,7 +11,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
     const { data, error } = await supabase.from('Customer').select('*');
-    if (error) return Response.json({ error: error.message }, { status: 500 });
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
     const header = ['Nom', 'Email', 'Numéro SIRET', 'Numéro TVA', 'Adresse'];
     const rows = (data || []).map(c => [
       c.name,
@@ -21,7 +21,7 @@ export async function GET(req: Request) {
       typeof c.address === 'object' ? JSON.stringify(c.address) : ''
     ]);
     const csv = [header, ...rows].map(r => r.join(';')).join('\n');
-    return new Response(csv, {
+    return new NextResponse(csv, {
       headers: {
         'Content-Type': 'text/csv',
         'Content-Disposition': 'attachment; filename="clients.csv"',

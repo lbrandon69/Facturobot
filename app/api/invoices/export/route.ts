@@ -32,7 +32,7 @@ export async function GET(req: Request) {
   ]);
   const csv = [header, ...rows].map(r => r.join(';')).join('\n');
 
-  return new Response(csv, {
+  return new NextResponse(csv, {
     headers: {
       'Content-Type': 'text/csv',
       'Content-Disposition': 'attachment; filename="factures.csv"',

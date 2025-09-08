@@ -1,3 +1,4 @@
+import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 
 function isAuthenticated(req: Request) {
@@ -7,10 +8,10 @@ function isAuthenticated(req: Request) {
 
 export async function GET(req: Request) {
   if (!isAuthenticated(req)) {
-    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   const { data, error } = await supabase.from('Product').select('*');
-  if (error) return Response.json({ error: error.message }, { status: 500 });
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   const header = ['Nom', 'Unité', 'Prix HT', 'TVA (%)'];
   const rows = (data || []).map(p => [
     p.name,
@@ -19,7 +20,7 @@ export async function GET(req: Request) {
     typeof p.vatRate === 'number' ? p.vatRate : ''
   ]);
   const csv = [header, ...rows].map(r => r.join(';')).join('\n');
-  return new Response(csv, {
+  return new NextResponse(csv, {
     headers: {
       'Content-Type': 'text/csv',
       'Content-Disposition': 'attachment; filename="produits.csv"',
