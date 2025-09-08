@@ -1,18 +1,20 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '../../../lib/prisma';
+import { supabase } from '../../../lib/supabase';
 
 // GET: liste tous les clients
 export async function GET() {
-  const customers = await prisma.customer.findMany();
-  return NextResponse.json(customers);
+  const { data, error } = await supabase.from('Customer').select('*');
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  return NextResponse.json(data);
 }
 
 // POST: crée un client
 export async function POST(req: Request) {
   const body = await req.json();
   const { name, email, companyNumber, vatNumber, address } = body;
-  const customer = await prisma.customer.create({
-    data: { name, email, companyNumber, vatNumber, address },
-  });
-  return NextResponse.json(customer);
+  const { data, error } = await supabase.from('Customer').insert([
+    { name, email, companyNumber, vatNumber, address }
+  ]).select();
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  return NextResponse.json(data?.[0] ?? null);
 }

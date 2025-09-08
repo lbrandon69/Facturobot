@@ -19,6 +19,7 @@
     "@prisma/client": "^6.15.0",
     "@radix-ui/react-toast": "^1.2.15",
     "@react-pdf/renderer": "^4.3.0",
+    "@supabase/supabase-js": "^2.57.2",
     "aceternity-ui": "^0.2.2",
     "axios": "^1.11.0",
     "framer-motion": "^12.23.12",
