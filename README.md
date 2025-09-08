@@ -53,7 +53,7 @@ npm run dev
 
 ## ☁️ Déploiement
 
-- Prêt pour Vercel, Netlify, ou tout hébergeur Next.js compatible
+- Prêt pour Vercel ou tout hébergeur Next.js compatible
 - Variables d’environnement à configurer pour Stripe, base de données, etc.
 
 ---
@@ -103,7 +103,7 @@ A : Modifier les couleurs/fonds dans les composants ou le tailwind.config.js.
 **Q : Comment activer le paiement Stripe ?**
 A : Renseigner les variables d’environnement Stripe dans un fichier .env.local.
 
-**Q : Comment déployer sur Vercel/Netlify ?**
+**Q : Comment déployer sur Vercel ?**
 A : Pousser le repo, configurer les variables d’environnement, c’est prêt !
 
 ---
