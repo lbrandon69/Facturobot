@@ -1,3 +1,15 @@
+import { NextResponse } from 'next/server';
+import { supabase } from '@/lib/supabase';
+
+// GET: récupérer un produit par ID
+export async function GET(req: Request, context) {
+  const { params } = await context;
+  const id = await params.id;
+  const { data, error } = await supabase.from('Product').select('*').eq('id', id).single();
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (!data) return NextResponse.json({ error: 'Produit non trouvé' }, { status: 404 });
+  return NextResponse.json(data);
+}
 export async function PUT(req: Request, context) {
   const { params } = await context;
   const id = await params.id;
