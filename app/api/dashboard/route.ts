@@ -1,5 +1,4 @@
-import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { supabase } from '@/lib/supabase';
 
 function isAuthenticated(req: Request) {
   const cookie = req.headers.get('cookie') || '';
@@ -8,42 +7,51 @@ function isAuthenticated(req: Request) {
 
 export async function GET(req: Request) {
   // Auth désactivée temporairement pour tests locaux
-
   const { searchParams } = new URL(req.url);
   const start = searchParams.get('start');
   const end = searchParams.get('end');
-  const dateFilter: any = {};
-  if (start) dateFilter['issueDate'] = { gte: new Date(start) };
-  if (end) dateFilter['issueDate'] = { ...(dateFilter['issueDate'] || {}), lte: new Date(end) };
 
-  const totalInvoices = await prisma.invoice.count({ where: dateFilter });
-  const paidInvoices = await prisma.invoice.count({ where: { ...dateFilter, status: 'payée' } });
-  const totalRevenue = await prisma.invoice.aggregate({
-    _sum: { totalTtc: true },
-    where: { ...dateFilter, status: 'payée' },
-  });
-  const topCustomers = await prisma.customer.findMany({
-    include: {
-      invoices: {
-        where: { ...dateFilter, status: 'payée' },
-        select: { totalTtc: true },
-      },
-    },
-  });
-  const topCustomersStats = topCustomers
+  // Filtre de date
+  let filters = {};
+  if (start) filters['issueDate'] = { gte: start };
+  if (end) filters['issueDate'] = { ...(filters['issueDate'] || {}), lte: end };
+
+  // Total factures
+  const { count: totalInvoices, error: errorTotal } = await supabase
+    .from('Invoice')
+    .select('id', { count: 'exact', head: true });
+
+  // Total factures payées
+  const { count: paidInvoices, error: errorPaid } = await supabase
+    .from('Invoice')
+    .select('id', { count: 'exact', head: true })
+    .eq('status', 'payée');
+
+  // Chiffre d'affaires total
+  const { data: revenueData, error: errorRevenue } = await supabase
+    .from('Invoice')
+    .select('totalTtc, status')
+    .eq('status', 'payée');
+  const totalRevenue = revenueData?.reduce((sum, i) => sum + (i.totalTtc || 0), 0) || 0;
+
+  // Top clients
+  const { data: customersData, error: errorCustomers } = await supabase
+    .from('Customer')
+    .select('id, name, invoices(totalTtc, status)');
+  const topCustomersStats = (customersData || [])
     .map(c => ({
       name: c.name,
-      invoiceCount: c.invoices.length,
-      totalPaid: c.invoices.reduce((sum, i) => sum + i.totalTtc, 0),
+      invoiceCount: c.invoices?.filter(i => i.status === 'payée').length || 0,
+      totalPaid: c.invoices?.filter(i => i.status === 'payée').reduce((sum, i) => sum + (i.totalTtc || 0), 0) || 0,
     }))
     .filter(c => c.invoiceCount > 0)
     .sort((a, b) => b.totalPaid - a.totalPaid)
     .slice(0, 5);
 
-  return NextResponse.json({
+  return Response.json({
     totalInvoices,
     paidInvoices,
-    totalRevenue: totalRevenue._sum.totalTtc || 0,
+    totalRevenue,
     topCustomers: topCustomersStats,
   });
 }

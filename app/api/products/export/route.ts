@@ -1,5 +1,4 @@
-import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { supabase } from '@/lib/supabase';
 
 function isAuthenticated(req: Request) {
   const cookie = req.headers.get('cookie') || '';
@@ -8,11 +7,12 @@ function isAuthenticated(req: Request) {
 
 export async function GET(req: Request) {
   if (!isAuthenticated(req)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  const products = await prisma.product.findMany();
+  const { data, error } = await supabase.from('Product').select('*');
+  if (error) return Response.json({ error: error.message }, { status: 500 });
   const header = ['Nom', 'Unité', 'Prix HT', 'TVA (%)'];
-  const rows = products.map(p => [
+  const rows = (data || []).map(p => [
     p.name,
     p.unit || '',
     typeof p.priceHt === 'number' ? p.priceHt.toFixed(2) : '',

@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { supabase } from '@/lib/supabase';
 
 export async function GET() {
-  try {
-    // Test simple : compter les clients
-    const count = await prisma.customer.count();
-    return NextResponse.json({ status: 'ok', message: 'Connexion à la base réussie', customerCount: count });
-  } catch (e) {
-    return NextResponse.json({ status: 'error', message: e.message || 'Erreur de connexion à la base', error: e }, { status: 500 });
+  // Test simple : compter les clients
+  const { count, error } = await supabase
+    .from('Customer')
+    .select('id', { count: 'exact', head: true });
+  if (error) {
+    return Response.json({ status: 'error', message: error.message || 'Erreur de connexion à la base', error }, { status: 500 });
   }
+  return Response.json({ status: 'ok', message: 'Connexion à la base réussie', customerCount: count });
 }
