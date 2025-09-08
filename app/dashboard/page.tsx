@@ -47,6 +47,7 @@ const AnimatedBackground = () => (
 export default function DashboardPage() {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const router = useRouter();
@@ -56,9 +57,21 @@ export default function DashboardPage() {
     if (startDate) params.append('start', startDate);
     if (endDate) params.append('end', endDate);
     fetch('/api/dashboard?' + params.toString())
-      .then(res => res.json())
+      .then(async res => {
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          setError(data.error || res.statusText || 'Erreur API');
+          setLoading(false);
+          return;
+        }
+        return res.json();
+      })
       .then(data => {
-        setStats(data);
+        if (data) setStats(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError('Erreur réseau : ' + err.message);
         setLoading(false);
       });
   }, [startDate, endDate, router]);
@@ -69,6 +82,17 @@ export default function DashboardPage() {
         <AnimatedBackground />
         <main className="p-12 relative z-10" style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)', border: '1px solid #f1f5f9', fontFamily: 'Urbanist, Inter, SF Pro Display, Segoe UI, Arial, sans-serif' }}>
           <p className="text-center text-lg text-zinc-500">Chargement...</p>
+        </main>
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <AnimatedBackground />
+        <main className="p-12 relative z-10" style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)', border: '1px solid #f1f5f9', fontFamily: 'Urbanist, Inter, SF Pro Display, Segoe UI, Arial, sans-serif' }}>
+          <p style={{ color: '#ef4444', fontWeight: 700, fontSize: 22, textAlign: 'center', margin: '48px 0' }}>Erreur : {error}</p>
         </main>
       </>
     );
