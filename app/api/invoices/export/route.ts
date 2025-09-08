@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
 
 function isAuthenticated(req: Request) {
   const cookie = req.headers.get('cookie') || '';

@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '../../../../../lib/prisma';
 import PDFDocument from 'pdfkit';
 
 export async function GET(req: Request, context) {
