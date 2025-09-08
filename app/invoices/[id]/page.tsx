@@ -182,16 +182,16 @@ export default function InvoiceDetailPage() {
                 </tr>
               </thead>
               <tbody>
-                {[...invoice.items]
-                  .sort((a, b) => a.description.localeCompare(b.description))
+                {(Array.isArray(invoice.items) ? invoice.items : [])
+                  .sort((a, b) => (a.description || '').localeCompare(b.description || ''))
                   .map((it: any, idx: number) => (
                   <tr key={idx} style={{ borderBottom: '1px solid #eee' }}>
                     <td>{it.description}</td>
                     <td style={{ textAlign: 'right' }}>{it.quantity}</td>
-                    <td style={{ textAlign: 'right' }}>{it.unitPriceHt.toFixed(2)} €</td>
+                    <td style={{ textAlign: 'right' }}>{typeof it.unitPriceHt === 'number' ? it.unitPriceHt.toFixed(2) : ''} €</td>
                     <td style={{ textAlign: 'right' }}>{it.vatRate}</td>
-                    <td style={{ textAlign: 'right' }}>{it.lineTotalHt.toFixed(2)} €</td>
-                    <td style={{ textAlign: 'right' }}>{it.lineTotalTtc.toFixed(2)} €</td>
+                    <td style={{ textAlign: 'right' }}>{typeof it.lineTotalHt === 'number' ? it.lineTotalHt.toFixed(2) : ''} €</td>
+                    <td style={{ textAlign: 'right' }}>{typeof it.lineTotalTtc === 'number' ? it.lineTotalTtc.toFixed(2) : ''} €</td>
                   </tr>
                 ))}
               </tbody>
