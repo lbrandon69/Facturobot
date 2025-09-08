@@ -11,9 +11,16 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { id, ...productData } = body;
+    // Validation stricte des champs
+    const name = typeof body.name === 'string' ? body.name.trim() : '';
+    const priceHt = typeof body.priceHt === 'number' ? body.priceHt : parseFloat(body.priceHt);
+    const vatRate = typeof body.vatRate === 'number' ? body.vatRate : parseFloat(body.vatRate);
+    const unit = typeof body.unit === 'string' ? body.unit.trim() : '';
+    if (!name || isNaN(priceHt) || isNaN(vatRate) || !unit) {
+      return NextResponse.json({ error: 'Champs invalides ou manquants', details: { name, priceHt, vatRate, unit } }, { status: 400 });
+    }
     const { data, error } = await supabase.from('Product').insert([
-      productData
+      { name, priceHt, vatRate, unit }
     ]).select();
     if (error) {
       console.error('Erreur Supabase:', error);
