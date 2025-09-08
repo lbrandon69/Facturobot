@@ -26,14 +26,14 @@ function InvoicePdf({ invoice }: { invoice: any }) {
             <Text style={styles.cell}>Total HT</Text>
             <Text style={styles.cell}>Total TTC</Text>
           </View>
-          {invoice.items.map((it: any, idx: number) => (
+          {(Array.isArray(invoice.items) ? invoice.items : []).map((it: any, idx: number) => (
             <View key={idx} style={styles.row}>
               <Text style={styles.cell}>{it.description}</Text>
               <Text style={styles.cell}>{it.quantity}</Text>
-              <Text style={styles.cell}>{it.unitPriceHt.toFixed(2)} €</Text>
+              <Text style={styles.cell}>{typeof it.unitPriceHt === 'number' ? it.unitPriceHt.toFixed(2) : ''} €</Text>
               <Text style={styles.cell}>{it.vatRate}</Text>
-              <Text style={styles.cell}>{it.lineTotalHt.toFixed(2)} €</Text>
-              <Text style={styles.cell}>{it.lineTotalTtc.toFixed(2)} €</Text>
+              <Text style={styles.cell}>{typeof it.lineTotalHt === 'number' ? it.lineTotalHt.toFixed(2) : ''} €</Text>
+              <Text style={styles.cell}>{typeof it.lineTotalTtc === 'number' ? it.lineTotalTtc.toFixed(2) : ''} €</Text>
             </View>
           ))}
         </View>
