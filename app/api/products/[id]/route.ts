@@ -14,7 +14,6 @@ export async function PUT(req: Request, context) {
   const { params } = await context;
   const id = await params.id;
   const body = await req.json();
-  // On retire la clé 'id' si elle existe
   const { id: _id, ...productData } = body;
   const { data, error } = await supabase.from('Product').update(productData).eq('id', id).select();
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });

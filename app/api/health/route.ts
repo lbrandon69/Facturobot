@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 
 export async function GET() {
-  // Test simple : compter les clients
   const { count, error } = await supabase
     .from('Customer')
     .select('id', { count: 'exact', head: true });

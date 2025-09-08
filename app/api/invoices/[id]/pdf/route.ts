@@ -1,18 +1,17 @@
 import { NextResponse } from 'next/server';
 import PDFDocument from 'pdfkit';
+import { supabase } from '@/lib/supabase';
 
 export async function GET(req: Request, context) {
   const { params } = await context;
-  const invoice = await prisma.invoice.findUnique({
-    where: { id: params.id },
-    include: { items: true, customer: true },
-  });
-  if (!invoice) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  const { data: invoice, error } = await supabase
+    .from('Invoice')
+    .select('*, items(*), customer(*)')
+    .eq('id', params.id)
+    .single();
+  if (error || !invoice) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
   const doc = new PDFDocument({ margin: 40 });
-  let buffers: Buffer[] = [];
-  doc.on('data', buffers.push.bind(buffers));
-  doc.on('end', () => {});
 
   doc.fontSize(18).text(`Facture ${invoice.number}`, { align: 'center' });
   doc.moveDown();

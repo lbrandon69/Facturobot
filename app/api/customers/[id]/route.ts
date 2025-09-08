@@ -1,7 +1,6 @@
+
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
-
-// GET: récupérer un client par ID
 
 export async function GET(req: Request, context) {
   const { params } = await context;
@@ -12,8 +11,6 @@ export async function GET(req: Request, context) {
   return NextResponse.json(data);
 }
 
-// PUT: modifier un client
-
 export async function PUT(req: Request, context) {
   const { params } = await context;
   const id = await params.id;
@@ -23,7 +20,6 @@ export async function PUT(req: Request, context) {
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   return NextResponse.json(data?.[0] ?? null);
 }
-
 
 export async function DELETE(req: Request, context) {
   const { params } = await context;

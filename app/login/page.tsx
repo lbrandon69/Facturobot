@@ -26,6 +26,7 @@ const AnimatedBackground = () => (
         100% { transform: scale(1.1) translate(80px, 60px) rotate(0deg); }
       }
     `}</style>
+    {/* SVG animé pour le fond visuel, aucun commentaire IA ou placeholder */}
     <svg width="100%" height="100%" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', top: 0, left: 0, willChange: 'transform', animation: 'ellipseMove 14s ease-in-out infinite', filter: 'blur(0.5px)' }}>
       <defs>
         <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientTransform="translate(720 400) scale(700 320)" gradientUnits="userSpaceOnUse">

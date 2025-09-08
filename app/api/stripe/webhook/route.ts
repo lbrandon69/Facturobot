@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { supabase } from '@/lib/supabase';
 import Stripe from 'stripe';
 
 export const config = {
@@ -29,10 +30,7 @@ export async function POST(req: Request) {
     const session = event.data.object as Stripe.Checkout.Session;
     const invoiceId = session.metadata?.invoiceId || session.client_reference_id;
     if (invoiceId) {
-      await prisma.invoice.update({
-        where: { id: invoiceId },
-        data: { status: 'payée' },
-      });
+      await supabase.from('Invoice').update({ status: 'payée' }).eq('id', invoiceId);
     }
   }
 

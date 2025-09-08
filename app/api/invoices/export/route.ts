@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { supabase } from '@/lib/supabase';
 
 function isAuthenticated(req: Request) {
   const cookie = req.headers.get('cookie') || '';
@@ -10,10 +11,11 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const invoices = await prisma.invoice.findMany({
-    include: { customer: true },
-    orderBy: { issueDate: 'desc' },
-  });
+  const { data: invoices, error } = await supabase
+    .from('Invoice')
+    .select('*, customer(*)')
+    .order('issueDate', { ascending: false });
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
   const header = [
     'Numéro', 'Client', 'Date émission', 'Date échéance', 'Statut', 'Total HT', 'TVA', 'Total TTC'

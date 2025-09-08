@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
 import { BarChart2, Users, FileText, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-// Fond animé et typo premium (DA Apple/Revolut)
 const AnimatedBackground = () => (
   <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', width: '100vw', height: '100vh', overflow: 'hidden' }}>
     <style>{`
