@@ -11,9 +11,10 @@ export async function GET() {
 // POST: crée un client
 export async function POST(req: Request) {
   const body = await req.json();
-  const { name, email, companyNumber, vatNumber, address } = body;
+  // On retire la clé 'id' si elle existe
+  const { id, ...customerData } = body;
   const { data, error } = await supabase.from('Customer').insert([
-    { name, email, companyNumber, vatNumber, address }
+    customerData
   ]).select();
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json(data?.[0] ?? null);
