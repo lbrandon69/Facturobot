@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-  "dev": "next dev",
-  "build": "next build",
-  "start": "next start",
-  "seed": "tsx scripts/seed.ts"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "seed": "tsx scripts/seed.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -15,7 +15,6 @@
     "@heroicons/react": "^2.2.0",
     "@mui/icons-material": "^7.3.2",
     "@mui/material": "^7.3.2",
-    
     "@radix-ui/react-toast": "^1.2.15",
     "@react-pdf/renderer": "^4.3.0",
     "@supabase/supabase-js": "^2.57.2",
