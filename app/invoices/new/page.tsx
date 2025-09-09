@@ -103,7 +103,8 @@ export default function NewInvoicePage() {
         router.push('/');
       }, 2000);
     } else {
-      setError('Erreur lors de la création de la facture');
+      const err = await response.json().catch(() => ({}));
+      setError(err?.error || 'Erreur lors de la création de la facture');
     }
     setLoading(false);
   };

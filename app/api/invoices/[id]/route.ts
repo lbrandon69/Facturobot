@@ -4,10 +4,12 @@ export async function GET(req: Request, context: any) {
   const { id } = context.params;
   const { data, error } = await supabase
     .from('Invoice')
-    .select('*, items(*), customer(*), payments(*)')
+    .select('*, InvoiceItem(*), customer(*), payments(*)')
     .eq('id', id)
     .single();
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   if (!data) return NextResponse.json({ error: 'Not found' }, { status: 404 });
-  return NextResponse.json(data);
+  // Renomme InvoiceItem en items pour compatibilité frontend
+  const { InvoiceItem, ...rest } = data;
+  return NextResponse.json({ ...rest, items: InvoiceItem || [], customer: data.customer || null });
 }
