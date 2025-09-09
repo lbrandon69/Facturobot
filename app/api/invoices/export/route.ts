@@ -7,9 +7,7 @@ function isAuthenticated(req: Request) {
 }
 
 export async function GET(req: Request) {
-  if (!isAuthenticated(req)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  // Auth désactivée : tout le monde peut exporter
 
   const { data: invoices, error } = await supabase
     .from('Invoice')
