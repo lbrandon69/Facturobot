@@ -72,6 +72,9 @@ export default function InvoiceDetailPage() {
   if (!invoice || invoice.error) return (
     <Box sx={{ p: 6 }}>
       <p>Facture introuvable.</p>
+      {invoice?.error && (
+        <pre style={{ color: 'red', marginTop: 8 }}>{invoice.error}</pre>
+      )}
       <Link href="/invoices">Retour à la liste des factures</Link>
     </Box>
   );
