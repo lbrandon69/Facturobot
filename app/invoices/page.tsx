@@ -146,11 +146,11 @@ export default function InvoicesPage() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {[...invoices]
+                  {(Array.isArray(invoices) ? invoices : [])
                     .sort((a, b) => {
                       // Tri par numéro décroissant si possible, sinon par date décroissante
-                      const numA = parseInt(a.number.replace(/\D/g, ''));
-                      const numB = parseInt(b.number.replace(/\D/g, ''));
+                      const numA = parseInt((a.number || '').replace(/\D/g, ''));
+                      const numB = parseInt((b.number || '').replace(/\D/g, ''));
                       if (!isNaN(numA) && !isNaN(numB) && numA !== numB) {
                         return numB - numA;
                       }

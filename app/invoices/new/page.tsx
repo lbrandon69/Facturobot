@@ -79,13 +79,13 @@ export default function NewInvoicePage() {
   }, []);
 
   function addItem() {
-    setItems([...items, { productId: '', description: '', quantity: 1, unitPriceHt: 0, vatRate: 20 }]);
+    setItems(Array.isArray(items) ? [...items, { productId: '', description: '', quantity: 1, unitPriceHt: 0, vatRate: 20 }] : [{ productId: '', description: '', quantity: 1, unitPriceHt: 0, vatRate: 20 }]);
   }
   function updateItem(idx: number, field: keyof Item, value: any) {
-    setItems(items => items.map((it, i) => i===idx ? { ...it, [field]: value } : it));
+    setItems(items => Array.isArray(items) ? items.map((it, i) => i===idx ? { ...it, [field]: value } : it) : []);
   }
   function removeItem(idx: number) {
-    setItems(items => items.filter((_, i) => i!==idx));
+    setItems(items => Array.isArray(items) ? items.filter((_, i) => i!==idx) : []);
   }
 
   const handleSubmit = async (e: React.FormEvent) => {

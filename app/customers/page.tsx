@@ -125,8 +125,8 @@ export default function CustomersPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {[...customers]
-                    .sort((a, b) => a.name.localeCompare(b.name, 'fr', { sensitivity: 'base' }))
+                  {(Array.isArray(customers) ? customers : [])
+                    .sort((a, b) => (a.name || '').localeCompare(b.name || '', 'fr', { sensitivity: 'base' }))
                     .map((customer) => (
                     <tr key={customer.id} style={{ borderBottom: '1px solid #eef2ff', transition: 'background 0.2s' }}>
                       <td style={{ color: '#8b5cf6', fontWeight: 700, fontSize: 16, padding: '12px 18px', display: 'flex', alignItems: 'center', gap: 12 }}>

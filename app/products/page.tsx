@@ -71,7 +71,7 @@ export default function ProductsPage() {
       fetch(`/api/products/${id}`, { method: 'DELETE' })
         .then(async res => {
           if (res.ok) {
-            setProducts(prev => prev.filter(p => p.id !== id));
+            setProducts(prev => Array.isArray(prev) ? prev.filter(p => p.id !== id) : []);
             return "Produit supprimé !";
           } else {
             const data = await res.json().catch(() => ({}));
@@ -140,7 +140,7 @@ export default function ProductsPage() {
                 <Typography align="center" color="text.secondary">Aucun produit.</Typography>
               ) : (
                 <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0, width: '100%' }}>
-                  {products.map((product: any) => (
+                  {(Array.isArray(products) ? products : []).map((product: any) => (
                     <Box key={product.id} component="li" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #f1f5f9', py: 2 }}>
                       <Box>
                         <Typography sx={{ fontWeight: 600 }}>{product.name}</Typography>
