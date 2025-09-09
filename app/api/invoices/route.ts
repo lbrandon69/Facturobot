@@ -97,13 +97,22 @@ export async function GET(req: Request) {
     // Récupérer tous les clients en une requête
     const { data: customers, error: errorCustomers } = await supabase.from('Customer').select('id, name');
     if (errorCustomers) return NextResponse.json({ error: errorCustomers.message }, { status: 500 });
-    // Enrichir chaque facture avec le client
+    // Récupérer tous les items en une requête
+    const { data: items, error: errorItems } = await supabase.from('InvoiceItem').select('*, invoiceId');
+    if (errorItems) return NextResponse.json({ error: errorItems.message }, { status: 500 });
+    // Enrichir chaque facture avec le client et les items
     const customersMap = new Map(customers.map(c => [c.id, c]));
+    const itemsMap = new Map();
+    for (const item of items) {
+      if (!itemsMap.has(item.invoiceId)) itemsMap.set(item.invoiceId, []);
+      itemsMap.get(item.invoiceId).push(item);
+    }
     const enriched = (Array.isArray(invoices) ? invoices : []).map(inv => ({
       ...inv,
-      customer: customersMap.get(inv.customerId) || null
+      customer: customersMap.get(inv.customerId) || null,
+      items: itemsMap.get(inv.id) || []
     }));
     return NextResponse.json(enriched);
   }
-  return NextResponse.json(invoices);
+  return NextResponse.json(Array.isArray(invoices) ? invoices.map(inv => ({ ...inv, items: [] })) : []);
 }
