@@ -182,7 +182,7 @@ export default function DashboardPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {[...(stats.topCustomers ?? [])]
+                    {(Array.isArray(stats.topCustomers) ? stats.topCustomers : [])
                       .sort((a, b) => b.totalPaid - a.totalPaid)
                       .map((c: any, idx: number) => (
                         <tr key={idx} style={{ borderBottom: '1px solid #eef2ff', transition: 'background 0.2s' }}>
