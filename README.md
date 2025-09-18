@@ -114,7 +114,7 @@ A : Pousser le repo, configurer les variables d’environnement, c’est prêt !
 
 ---
 
-## 🛟 Support & Contact
+## 🛟 Suupport & Contact
 
 Pour toute évolution, bug ou suggestion, ouvrir une issue ou contacter le développeur.
 
